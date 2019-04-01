@@ -1,17 +1,51 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Bitsight Exercise</h1>
+        <div class="container">
+          <button
+            class="button"
+            type="button"
+            id="hot_repo"
+            :class="{
+              'is-loading': loading && activeTable === 'hot_repo'
+            }"
+            @click="activeTable = 'hot_repo'">
+              Repositories
+          </button>
+          <button
+            class="button"
+            type="button"
+            id="prolific_users"
+            :class="{
+              'is-loading': loading && activeTable === 'prolific_users'
+            }"
+            @click="activeTable = 'prolific_users'">
+              Users
+          </button>
+          <Component
+            :is="tableComponent"
+            @hook:created="loading = true"
+            @hook:updated="loading = false"/>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld,
+  data: () => ({
+    activeTable: 'hot_repo',
+    loading: false
+  }),
+  computed: {
+    tableComponent() {
+      const ComponentName = this.activeTable === 'hot_repo' ? 'RepositoriesTable' : 'UsersTable';
+      return () => import (`./components/${ComponentName}.vue`)
+    },
   },
 };
 </script>
