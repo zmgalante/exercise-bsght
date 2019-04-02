@@ -4,26 +4,30 @@
       <div class="container">
         <h1 class="title">Bitsight Exercise</h1>
         <div class="container">
-          <button
-            class="button"
-            type="button"
-            id="hot_repo"
-            :class="{
-              'is-loading': loading && activeTable === 'hot_repo'
-            }"
-            @click="activeTable = 'hot_repo'">
-              Repositories
-          </button>
-          <button
-            class="button"
-            type="button"
-            id="prolific_users"
-            :class="{
-              'is-loading': loading && activeTable === 'prolific_users'
-            }"
-            @click="activeTable = 'prolific_users'">
-              Users
-          </button>
+            <div class="action-buttons">
+            <button
+              class="button"
+              type="button"
+              id="hot_repo"
+              :class="{
+                'is-primary': activeTable === 'hot_repo',
+                'is-loading': loading && activeTable === 'hot_repo'
+              }"
+              @click="activeTable = 'hot_repo'">
+                Repositories
+            </button>
+            <button
+              class="button"
+              type="button"
+              id="prolific_users"
+              :class="{
+                'is-primary': activeTable === 'prolific_users',
+                'is-loading': loading && activeTable === 'prolific_users'
+              }"
+              @click="activeTable = 'prolific_users'">
+                Users
+            </button>
+          </div>
           <Component
             :is="tableComponent"
             @hook:created="loading = true"
@@ -39,12 +43,12 @@ export default {
   name: 'app',
   data: () => ({
     activeTable: 'hot_repo',
-    loading: false
+    loading: false,
   }),
   computed: {
     tableComponent() {
       const ComponentName = this.activeTable === 'hot_repo' ? 'RepositoriesTable' : 'UsersTable';
-      return () => import (`./components/${ComponentName}.vue`)
+      return () => import(`./components/${ComponentName}.vue`);
     },
   },
 };
